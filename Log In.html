@@ -435,6 +435,39 @@
   }
 }
 
+  
+    .input-error {
+      border-color: #ff4d4f !important;
+      box-shadow: 0 0 0 1px rgba(255, 77, 79, 0.35);
+    }
+
+    .toast-message {
+      position: fixed;
+      left: 50%;
+      top: 12px;
+      transform: translate(-50%, -16px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 77, 79, 0.96);
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1.4;
+      max-width: 90%;
+      text-align: center;
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .toast-message.toast-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
   </style>
 </head>
 <body>
@@ -726,15 +759,52 @@
         });
       }
 
+      function showToast(message) {
+        var toast = document.getElementById('form-toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('toast-visible');
+        window.clearTimeout(showToast._timer);
+        showToast._timer = window.setTimeout(function () {
+          toast.classList.remove('toast-visible');
+        }, 2200);
+      }
+
+      function clearFieldError(field) {
+        if (!field) return;
+        field.classList.remove('input-error');
+      }
+
+      if (phoneInput) {
+        phoneInput.addEventListener('input', function () {
+          clearFieldError(phoneInput);
+          updateLoginButtonState();
+        });
+      }
+
+      if (passwordInput) {
+        passwordInput.addEventListener('input', function () {
+          clearFieldError(passwordInput);
+          updateLoginButtonState();
+        });
+      }
+
       if (loginBtn) {
         updateLoginButtonState();
         loginBtn.addEventListener('click', function () {
+          clearFieldError(phoneInput);
+          clearFieldError(passwordInput);
+
           if (!isPhoneValid()) {
             var digits = phoneInput ? getPhoneDigits(phoneInput.value) : '';
             if (!digits.length) {
-              alert('Please enter your phone number.');
+              showToast('Please enter your phone number.');
             } else {
-              alert('Please enter a valid phone number.');
+              showToast('Please enter a valid phone number.');
+            }
+            if (phoneInput) {
+              phoneInput.classList.add('input-error');
+              phoneInput.focus();
             }
             return;
           }
@@ -742,9 +812,13 @@
           if (!isPasswordValid()) {
             var pwd = passwordInput ? (passwordInput.value || '') : '';
             if (!pwd.length) {
-              alert('Please enter your password.');
+              showToast('Please enter your password.');
             } else {
-              alert('Password must be at least 8 characters.');
+              showToast('Password must be at least 8 characters.');
+            }
+            if (passwordInput) {
+              passwordInput.classList.add('input-error');
+              passwordInput.focus();
             }
             return;
           }
@@ -774,6 +848,7 @@
       </div>
     </div>
   </div>
+  <div id="form-toast" class="toast-message"></div>
 </body>
 
 </html>
