@@ -188,6 +188,11 @@
   justify-content: center;
   background: rgba(10, 15, 24, 0.8);
   padding: 0;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.94);
 }
 
 .toggle-password .eye-icon {
@@ -445,7 +450,7 @@
     .toast-message {
       position: fixed;
       left: 50%;
-      top: 210px;
+      top: 220px;
       transform: translate(-50%, -10px);
       padding: 8px 14px;
       border-radius: 999px;
@@ -500,7 +505,7 @@
 <div class="field-label">Password</div>
 <div class="password-wrapper">
 <input autocomplete="current-password" class="input-field" placeholder="Your password must be at least 8 characters" type="password"/>
-<button class="toggle-password" type="button"><img src="images/password-eye.svg" alt="Toggle password visibility" class="eye-icon"></button>
+<button class="toggle-password" type="button"><img src="images/password-eye-closed.png" alt="Toggle password visibility" class="eye-icon"></button>
 </div>
 </div>
 <div class="options-row">
@@ -754,9 +759,17 @@
       }
 
       if (togglePasswordBtn && passwordInput) {
+        var eyeIcon = togglePasswordBtn.querySelector('.eye-icon');
         togglePasswordBtn.addEventListener('click', function () {
           var currentType = passwordInput.getAttribute('type') || 'password';
-          passwordInput.setAttribute('type', currentType === 'password' ? 'text' : 'password');
+          var isHidden = currentType === 'password';
+          passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+          if (eyeIcon) {
+            eyeIcon.src = isHidden
+              ? 'images/password-eye-open.png'
+              : 'images/password-eye-closed.png';
+            eyeIcon.alt = isHidden ? 'Hide password' : 'Show password';
+          }
         });
       }
 
