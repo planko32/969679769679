@@ -195,21 +195,19 @@
     }
 
     .copy-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background-color: #101b20;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .copy-btn img {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       display: block;
-      opacity: 0.9;
     }
 
     .reminder-title {
@@ -302,6 +300,33 @@
       background-color: #1f2b40;
     }
 
+    .currency-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .currency-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .currency-option {
+      justify-content: flex-start;
+      padding: 0 16px;
+      gap: 8px;
+    }
+
+    .currency-option-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: block;
+      margin-right: 8px;
+    }
+
 </style>
 </head>
 <body>
@@ -322,8 +347,11 @@
 <div class="main">
 <div class="section-label">Deposit Currency</div>
 <div class="currency-box">
-<span>USDT</span>
-<span class="currency-arrow"></span>
+  <div class="currency-left">
+    <img src="images/usdt.png" alt="USDT" class="currency-icon"/>
+    <span class="currency-text">USDT</span>
+  </div>
+  <span class="currency-arrow"></span>
 </div>
 <div class="section-label">Deposit Network</div>
 <div class="network-row">
@@ -363,8 +391,14 @@
 <div class="currency-modal" id="currencyModal">
   <div class="currency-modal-header">Select Currency</div>
   <div class="currency-option-list">
-    <button class="currency-option" type="button" data-code="USDT">USDT</button>
-    <button class="currency-option" type="button" data-code="USDC">USDC</button>
+    <button class="currency-option" type="button" data-code="USDT">
+      <img src="images/usdt.png" alt="USDT" class="currency-option-icon"/>
+      <span>USDT</span>
+    </button>
+    <button class="currency-option" type="button" data-code="USDC">
+      <img src="images/usdc.png" alt="USDC" class="currency-option-icon"/>
+      <span>USDC</span>
+    </button>
   </div>
 </div>
 
@@ -383,13 +417,19 @@
       }
     };
 
+    var currencyConfigs = {
+      "USDT": { icon: "images/usdt.png" },
+      "USDC": { icon: "images/usdc.png" }
+    };
+
     var currentCurrency = "USDT";
 
     var networkButtons = document.querySelectorAll(".network-btn");
     var addressTextEl = document.querySelector(".address-text");
     var qrCaptionEl = document.querySelector(".qr-caption");
     var currencyBox = document.querySelector(".currency-box");
-    var currencyTextEl = currencyBox ? currencyBox.querySelector("span") : null;
+    var currencyTextEl = document.querySelector(".currency-text");
+    var currencyIconEl = document.querySelector(".currency-icon");
     var mask = document.getElementById("currencyMask");
     var modal = document.getElementById("currencyModal");
     var currencyOptions = modal ? modal.querySelectorAll(".currency-option") : [];
@@ -438,6 +478,9 @@
         if (currencyTextEl) {
           currencyTextEl.textContent = code;
         }
+        if (currencyIconEl && currencyConfigs[code]) {
+          currencyIconEl.src = currencyConfigs[code].icon;
+        }
         closeCurrencyModal();
         var activeBtn = document.querySelector(".network-btn.active");
         if (activeBtn) {
@@ -453,25 +496,5 @@
 
 <script src="auth.js"></script>
 <script src="common-nav.js"></script>
-
-<script>
-  const copyBtn = document.querySelector(".copy-btn");
-  const addressEl = document.querySelector(".address-text");
-
-  if (copyBtn && addressEl) {
-    copyBtn.addEventListener("click", function () {
-      const addr = addressEl.textContent.trim();
-      if (!addr) return;
-      navigator.clipboard.writeText(addr)
-        .then(function () {
-          alert("Copied ✓");
-        })
-        .catch(function () {
-          alert("Copy failed");
-        });
-    });
-  }
-</script>
-
 </body>
 </html>
