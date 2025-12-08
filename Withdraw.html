@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Withdraw</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <style>
+    :root {
+      --bg-main: #0C0B10;
+      --bg-card: #17202D;
+      --bg-input: #233246;
+      --bg-input-alt: #323233;
+      --text-main: #FFFFFF;
+      --text-sub: #DBE3F4;
+      --accent: #00D1FF;
+      --accent-strong: #145AF2;
+      --accent-soft: #5C8DF6;
+      --border-soft: #233246;
+      --danger: #ff4d4f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #000000;
+      border-bottom: 1px solid #111318;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      min-width: 44px;
+      justify-content: flex-start;
+    }
+
+    .header-right {
+      justify-content: flex-end;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #232633;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    .bills-icon-link img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .content {
+      padding: 12px 16px 24px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .fake-select,
+    .input-row {
+      background: var(--bg-input);
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .fake-select.placeholder {
+      color: #6f7a8b;
+    }
+
+    .fake-select-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .currency-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+      background: rgba(0, 209, 255, 0.04);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .address-action {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .input-row input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-size: 14px;
+      flex: 1;
+    }
+
+    .input-row input::placeholder {
+      color: #6f7a8b;
+    }
+
+    .input-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .max-btn {
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .available-line {
+      margin: 4px 2px 10px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .available-line span {
+      color: var(--accent);
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 18px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      opacity: 0.8;
+    }
+
+    .info-value {
+      color: var(--text-main);
+    }
+
+    .withdraw-btn {
+      width: 100%;
+      border: none;
+      outline: none;
+      margin-top: 6px;
+      padding: 14px 16px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #000;
+      background-image: linear-gradient(90deg, #447CF5, #00D1FF);
+      text-align: center;
+      opacity: 0.4;
+    }
+
+    .withdraw-btn.enabled {
+      opacity: 1;
+    }
+
+    .withdraw-btn:active {
+      transform: translateY(0.5px);
+    }
+
+    .error-text {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--danger);
+      min-height: 14px;
+    }
+
+    .section-title {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .reminder {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 10px 14px 12px;
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .reminder ul {
+      padding-left: 14px;
+    }
+
+    .reminder li {
+      margin-bottom: 4px;
+    }
+
+    @media (min-width: 480px) {
+      .page {
+        border-left: 1px solid #111318;
+        border-right: 1px solid #111318;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-left">
+        <a href="javascript:history.back();" class="back-btn">&#x2039;</a>
+      </div>
+      <div class="header-title">Withdraw</div>
+      <div class="header-right">
+        <a href="Bills.html" class="bills-icon-link">
+          <img src="images/bills-icon.png" alt="Bills" />
+        </a>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="field-group">
+        <div class="field-label">Withdrawal Currency</div>
+        <div class="fake-select">
+          <div class="fake-select-text">USDT</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Withdrawal Network</div>
+        <div class="currency-pill">TRC20</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Withdrawal Address</div>
+        <div class="fake-select placeholder" id="addressDisplay">
+          <div class="fake-select-text" id="addressPlaceholder">Please select an address</div>
+        </div>
+        <div class="address-action" id="addAddressBtn">Add address</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Quantity</div>
+        <div class="input-row">
+          <input
+            id="amountInput"
+            type="number"
+            inputmode="decimal"
+            placeholder="Enter Withdrawal Quantity"
+            min="0"
+          />
+          <div class="input-right">
+            <span>USDT</span>
+            <span class="max-btn" id="maxBtn">MAX</span>
+          </div>
+        </div>
+        <div class="available-line">Available <span id="availableBalance">3.06 USDT</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-label">Minimum Withdrawal Quantity</span>
+          <span class="info-value" id="minQty">20 USDT</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Withdrawal Fee</span>
+          <span class="info-value" id="feeValue">0 USDT</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Received Quantity</span>
+          <span class="info-value" id="receivedValue">0 USDT</span>
+        </div>
+      </div>
+
+      <button id="withdrawBtn" class="withdraw-btn" disabled>Withdraw</button>
+      <div id="errorText" class="error-text"></div>
+
+      <div class="section-title">Friendly Reminder</div>
+      <div class="reminder">
+        <ul>
+          <li>The minimum withdrawal amount is: 20 USDT.</li>
+          <li>Withdrawal fee: 5%.</li>
+          <li>Withdrawals will arrive within 2–120 hours.</li>
+          <li>After completing 6 AI computing power tasks, you can apply for withdrawal.</li>
+          <li>Make sure your computer and browser are secure to prevent information from being tampered with or leaked.</li>
+          <li>Before withdrawing coins, please confirm whether the withdrawal address is safe and corresponds to the current currency. Once the address of a non‑TRC20 network is used, the platform cannot help to retrieve it. Please check carefully before withdrawing coins.</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const MIN_WITHDRAW = 20;
+      const FEE_RATE = 0.05;
+      const available = 3.06; // demo balance
+
+      const amountInput = document.getElementById("amountInput");
+      const maxBtn = document.getElementById("maxBtn");
+      const feeValue = document.getElementById("feeValue");
+      const receivedValue = document.getElementById("receivedValue");
+      const withdrawBtn = document.getElementById("withdrawBtn");
+      const errorText = document.getElementById("errorText");
+      const addAddressBtn = document.getElementById("addAddressBtn");
+      const addressPlaceholder = document.getElementById("addressPlaceholder");
+      const addressDisplay = document.getElementById("addressDisplay");
+
+      let address = "";
+
+      function formatUsdt(v) {
+        if (isNaN(v) || !isFinite(v)) return "0 USDT";
+        return v.toFixed(2) + " USDT";
+      }
+
+      function isValidTrc20(addr) {
+        if (!addr) return false;
+        addr = addr.trim();
+        // Simple TRC20 style check: starts with T and 34 characters
+        return addr.length === 34 && addr[0] === "T";
+      }
+
+      function updateState() {
+        const raw = parseFloat(amountInput.value || "0");
+        let valid = true;
+        let message = "";
+
+        if (!address) {
+          valid = false;
+          message = "Please add a TRC20 withdrawal address.";
+        } else if (!isValidTrc20(address)) {
+          valid = false;
+          message = "Invalid TRC20 address format.";
+        } else if (!raw || raw <= 0) {
+          valid = false;
+          message = "Enter a withdrawal amount.";
+        } else if (raw < MIN_WITHDRAW) {
+          valid = false;
+          message = "Minimum withdrawal amount is " + MIN_WITHDRAW + " USDT.";
+        } else if (raw > available) {
+          valid = false;
+          message = "Insufficient balance.";
+        }
+
+        const fee = valid || raw >= MIN_WITHDRAW ? raw * FEE_RATE : 0;
+        const received = valid || raw >= MIN_WITHDRAW ? raw - fee : 0;
+
+        feeValue.textContent = formatUsdt(fee);
+        receivedValue.textContent = formatUsdt(received);
+
+        withdrawBtn.disabled = !valid;
+        withdrawBtn.classList.toggle("enabled", valid);
+        errorText.textContent = message;
+      }
+
+      maxBtn.addEventListener("click", function () {
+        amountInput.value = available.toFixed(2);
+        updateState();
+      });
+
+      amountInput.addEventListener("input", updateState);
+
+      addAddressBtn.addEventListener("click", function () {
+        const value = prompt("Enter TRC20 withdrawal address:");
+        if (value !== null) {
+          address = value.trim();
+          if (address) {
+            addressPlaceholder.textContent = address;
+            addressDisplay.classList.remove("placeholder");
+          } else {
+            addressPlaceholder.textContent = "Please select an address";
+            addressDisplay.classList.add("placeholder");
+          }
+          updateState();
+        }
+      });
+
+      withdrawBtn.addEventListener("click", function () {
+        if (withdrawBtn.disabled) return;
+        alert("This is a demo withdrawal. No real transfer will be made.");
+      });
+
+      updateState();
+    })();
+  </script>
+</body>
+</html>
