@@ -5,100 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Withdraw - EXARAI</title>
   <link rel="stylesheet" href="withdraw-style.css" />
-
-  <!-- Popup + icon small styles only -->
-  <style>
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal {
-      background: #14151a;
-      border-radius: 12px;
-      padding: 16px;
-      width: 90%;
-      max-width: 400px;
-      color: #ffffff;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      box-sizing: border-box;
-    }
-    .modal-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .wallet-type-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .wallet-type-btn {
-      flex: 1;
-      border-radius: 999px;
-      padding: 8px 10px;
-      border: 1px solid #2a2b32;
-      background: #181921;
-      color: #ffffff;
-      font-size: 14px;
-    }
-    .wallet-type-btn.active {
-      border-color: #3f8cff;
-      background: #1f2433;
-    }
-    .modal-field-label {
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .modal-input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #2a2b32;
-      background: #101117;
-      color: #ffffff;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    .modal-btn {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      border: none;
-    }
-    .modal-btn.cancel {
-      background: #2a2b32;
-      color: #ffffff;
-    }
-    .modal-btn.confirm {
-      background: #3f8cff;
-      color: #ffffff;
-    }
-    .address-row.has-value .select-placeholder {
-      color: #ffffff;
-    }
-    .address-text {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .header-icon-img {
-      width: 18px;
-      height: 18px;
-      display: block;
-    }
-  </style>
 </head>
 <body>
   <div class="app">
@@ -107,16 +13,14 @@
         <div class="back-arrow"></div>
       </a>
       <div class="app-header-title">Withdraw</div>
-      <div class="header-icon" id="billsIcon">
-        <img src="images/back-icon-D2ne3Npi.png" alt="Bills" class="header-icon-img" />
-      </div>
+      <div class="header-icon">⧉</div>
     </header>
 
     <main class="app-main">
       <div class="section-label">Withdrawal Currency</div>
       <div class="select-box">
         <span class="select-value">USDT</span>
-        <!-- تم حذف السهم الصغير للعملة -->
+        <span class="chevron">▾</span>
       </div>
 
       <div class="section-label">Withdrawal Network</div>
@@ -125,13 +29,13 @@
       </div>
 
       <div class="section-label">Withdrawal Address</div>
-      <div class="select-box address-row" id="addressRow">
-        <span class="select-placeholder address-text" id="addressText">Please select an address</span>
+      <div class="select-box address-row">
+        <span class="select-placeholder">Please select an address</span>
         <div class="address-icon">👤</div>
         <span class="chevron">▾</span>
       </div>
 
-      <button type="button" class="add-address-btn" id="addAddressBtn">Add address</button>
+      <button type="button" class="add-address-btn">Add address</button>
 
       <div class="section-label">Quantity</div>
       <div class="select-box qty-box">
@@ -176,26 +80,9 @@
     </main>
   </div>
 
-  <!-- Popup: Add address -->
-  <div class="modal-backdrop" id="addressModal">
-    <div class="modal">
-      <div class="modal-title">Add withdrawal address</div>
-      <div class="modal-field-label">Wallet type</div>
-      <div class="wallet-type-row">
-        <button type="button" class="wallet-type-btn" data-type="internal" id="walletInternal">Internal wallet</button>
-        <button type="button" class="wallet-type-btn" data-type="external" id="walletExternal">External wallet</button>
-      </div>
-      <div class="modal-field-label">Address (TRC20)</div>
-      <input type="text" id="addressInput" class="modal-input" placeholder="Paste TRC20 withdrawal address" />
-      <div class="modal-actions">
-        <button type="button" class="modal-btn cancel" id="modalCancel">Cancel</button>
-        <button type="button" class="modal-btn confirm" id="modalConfirm">Confirm</button>
-      </div>
-    </div>
-  </div>
-
+  
   <script>
-    (function() {
+    (function() {{
       var qtyInput = document.getElementById('qtyInput');
       var feeVal = document.getElementById('feeVal');
       var recvVal = document.getElementById('recvVal');
@@ -208,227 +95,114 @@
       var currentUser = null;
       var balance = 0;
 
-      // عناصر العنوان
-      var addressRow = document.getElementById('addressRow');
-      var addressText = document.getElementById('addressText');
-      var addAddressBtn = document.getElementById('addAddressBtn');
-
-      // Popup elements
-      var addressModal = document.getElementById('addressModal');
-      var modalCancel = document.getElementById('modalCancel');
-      var modalConfirm = document.getElementById('modalConfirm');
-      var addressInput = document.getElementById('addressInput');
-      var walletInternal = document.getElementById('walletInternal');
-      var walletExternal = document.getElementById('walletExternal');
-
-      var selectedWalletType = null;
-      var selectedAddress = null;
-
-      // Bills icon
-      var billsIcon = document.getElementById('billsIcon');
-      if (billsIcon) {
-        billsIcon.addEventListener('click', function() {
-          window.location.href = 'Bills.html';
-        });
-      }
-
-      if (window.ExaAuth) {
+      if (window.ExaAuth) {{
         currentUser = ExaAuth.getCurrentUser();
-        if (currentUser && typeof currentUser.usdtBalance === 'number') {
+        if (currentUser && typeof currentUser.usdtBalance === 'number') {{
           balance = currentUser.usdtBalance;
-        }
-      }
+        }}
+      }}
 
       maxAvailable = balance;
-      if (availableVal) {
+      if (availableVal) {{
         availableVal.textContent = balance.toFixed(2) + ' USDT';
-      }
+      }}
 
-      function updateValues() {
+      function updateValues() {{
         var v = parseFloat(qtyInput.value);
-        if (isNaN(v) || v <= 0) {
+        if (isNaN(v) || v <= 0) {{
           feeVal.textContent = '0';
           recvVal.textContent = '0';
           return;
-        }
+        }}
         var fee = v * 0.05;
         var received = v - fee;
         feeVal.textContent = fee.toFixed(2);
         recvVal.textContent = received.toFixed(2);
-      }
+      }}
 
-      if (qtyInput) {
+      if (qtyInput) {{
         qtyInput.addEventListener('input', updateValues);
-      }
+      }}
 
-      if (maxLink) {
-        maxLink.addEventListener('click', function() {
+      if (maxLink) {{
+        maxLink.addEventListener('click', function() {{
           qtyInput.value = maxAvailable.toFixed(2);
           updateValues();
-        });
-      }
+        }});
+      }}
 
-      // TRC20 address validation
-      function isValidTRC20Address(addr) {
-        var re = /^T[1-9A-HJ-NP-Za-km-z]{25,33}$/;
-        return re.test(addr);
-      }
-
-      // Open / close modal
-      function openAddressModal() {
-        if (!addressModal) return;
-        addressModal.style.display = 'flex';
-        selectedWalletType = null;
-        addressInput.value = '';
-        if (walletInternal) walletInternal.classList.remove('active');
-        if (walletExternal) walletExternal.classList.remove('active');
-      }
-
-      function closeAddressModal() {
-        if (!addressModal) return;
-        addressModal.style.display = 'none';
-      }
-
-      if (addAddressBtn) {
-        addAddressBtn.addEventListener('click', openAddressModal);
-      }
-      if (addressRow) {
-        addressRow.addEventListener('click', openAddressModal);
-      }
-
-      if (walletInternal) {
-        walletInternal.addEventListener('click', function() {
-          selectedWalletType = this.getAttribute('data-type');
-          walletInternal.classList.add('active');
-          walletExternal.classList.remove('active');
-        });
-      }
-      if (walletExternal) {
-        walletExternal.addEventListener('click', function() {
-          selectedWalletType = this.getAttribute('data-type');
-          walletExternal.classList.add('active');
-          walletInternal.classList.remove('active');
-        });
-      }
-
-      if (modalCancel) {
-        modalCancel.addEventListener('click', function() {
-          closeAddressModal();
-        });
-      }
-
-      if (modalConfirm) {
-        modalConfirm.addEventListener('click', function() {
-          if (!selectedWalletType) {
-            alert('Please select a wallet type.');
-            return;
-          }
-          var addr = (addressInput.value || '').trim();
-          if (!addr) {
-            alert('Please enter a withdrawal address.');
-            return;
-          }
-          if (!isValidTRC20Address(addr)) {
-            alert('Invalid TRC20 address. It should start with T and be 26-34 characters long.');
-            return;
-          }
-
-          selectedAddress = {
-            type: selectedWalletType,
-            address: addr
-          };
-
-          var shortAddr = addr;
-          if (addr.length > 18) {
-            shortAddr = addr.slice(0, 8) + '...' + addr.slice(-6);
-          }
-          if (addressText) {
-            addressText.textContent = shortAddr;
-          }
-          if (addressRow) {
-            addressRow.classList.add('has-value');
-          }
-          closeAddressModal();
-        });
-      }
-
-      if (withdrawBtn) {
-        withdrawBtn.addEventListener('click', function() {
-          if (!window.ExaAuth || !currentUser) {
+      if (withdrawBtn) {{
+        withdrawBtn.addEventListener('click', function() {{
+          if (!window.ExaAuth || !currentUser) {{
             alert('Internal error: user not loaded.');
             return;
-          }
-
-          if (!selectedAddress) {
-            alert('Please add a withdrawal address.');
-            return;
-          }
+          }}
 
           var v = parseFloat(qtyInput.value);
-          if (isNaN(v) || v <= 0) {
+          if (isNaN(v) || v <= 0) {{
             alert('Please enter a valid amount.');
             return;
-          }
+          }}
 
-          if (v < minQty) {
+          if (v < minQty) {{
             alert('The minimum withdrawal amount is ' + minQty + ' USDT.');
             return;
-          }
+          }}
 
-          if (v > balance) {
+          if (v > balance) {{
             alert('Insufficient balance.');
             return;
-          }
+          }}
 
           var fee = v * 0.05;
           var received = v - fee;
 
-          var tx = {
+          var tx = {{
             id: 'wd_' + Date.now(),
             type: 'withdraw',
             amount: v,
             fee: fee,
             net: received,
             status: 'PENDING',
-            createdAt: new Date().toISOString(),
-            network: 'TRC20',
-            walletType: selectedAddress.type,
-            address: selectedAddress.address
-          };
+            createdAt: new Date().toISOString()
+          }};
 
-          if (typeof ExaAuth.addTransaction === 'function') {
+          if (typeof ExaAuth.addTransaction === 'function') {{
             ExaAuth.addTransaction(currentUser.uid, tx);
-          }
+          }}
 
+          // Update balances: deduct from available and move to frozen
           var frozen = typeof currentUser.frozenBalance === 'number' ? currentUser.frozenBalance : 0;
           balance = balance - v;
           if (balance < 0) balance = 0;
           currentUser.usdtBalance = parseFloat(balance.toFixed(2));
           currentUser.frozenBalance = parseFloat((frozen + v).toFixed(2));
 
-          if (typeof ExaAuth.updateUser === 'function') {
+          if (typeof ExaAuth.updateUser === 'function') {{
             ExaAuth.updateUser(currentUser);
-          } else {
+          }} else {{
+            // fallback
             ExaAuth.setCurrentUser(currentUser);
-          }
+          }}
 
           maxAvailable = balance;
-          if (availableVal) {
+          if (availableVal) {{
             availableVal.textContent = balance.toFixed(2) + ' USDT';
-          }
+          }}
 
-          if (qtyInput) {
+          if (qtyInput) {{
             qtyInput.value = '';
-          }
+          }}
           updateValues();
 
           alert('Withdrawal request submitted and is pending review.');
-        });
-      }
-    })();
+        }});
+      }}
+    }})();
   </script>
 
+
   <script src="auth.js"></script>
-  <script src="common-nav.js"></script>
+<script src="common-nav.js"></script>
 </body>
 </html>
