@@ -4,224 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Withdraw - EXARAI</title>
+  <link rel="stylesheet" href="withdraw-style.css" />
 
-  <!-- Inline base styles so الصفحة ما تطلع بدون تنسيق حتى لو ملف CSS الخارجي ما اشتغل -->
+  <!-- Popup + icon small styles only -->
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    html, body {
-      height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-      background: #05060a;
-      color: #ffffff;
-    }
-    body {
-      display: flex;
-      justify-content: center;
-    }
-    .app {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      background: #05060a;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .app-header {
-      height: 48px;
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #15161d;
-    }
-    .back-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-    }
-    .back-arrow {
-      width: 8px;
-      height: 8px;
-      border-left: 2px solid #ffffff;
-      border-bottom: 2px solid #ffffff;
-      transform: rotate(45deg);
-    }
-    .app-header-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .header-icon {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .header-icon-img {
-      width: 18px;
-      height: 18px;
-      display: block;
-    }
-    .app-main {
-      flex: 1;
-      padding: 12px 12px 20px;
-      overflow-y: auto;
-      background: #05060a;
-    }
-    .section-label {
-      font-size: 13px;
-      color: #9a9baa;
-      margin-top: 12px;
-      margin-bottom: 6px;
-    }
-    .select-box {
-      background: #101119;
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid #1b1c25;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .select-value {
-      font-size: 14px;
-      color: #ffffff;
-    }
-    .network-row {
-      display: flex;
-      gap: 8px;
-    }
-    .network-pill {
-      flex: 0 0 auto;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid #262739;
-      background: #101119;
-      color: #c4c5d2;
-      font-size: 13px;
-    }
-    .network-pill.active {
-      border-color: #3f8cff;
-      background: #17233a;
-      color: #ffffff;
-    }
-    .address-row {
-      gap: 8px;
-    }
-    .address-icon {
-      font-size: 18px;
-    }
-    .select-placeholder {
-      font-size: 13px;
-      color: #5f6070;
-    }
-    .address-row.has-value .select-placeholder {
-      color: #ffffff;
-    }
-    .address-text {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .add-address-btn {
-      margin-top: 8px;
-      width: 100%;
-      padding: 9px 12px;
-      border-radius: 999px;
-      border: 1px solid #262739;
-      background: #101119;
-      color: #e3e4ee;
-      font-size: 13px;
-    }
-    .qty-box {
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .qty-input {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: #ffffff;
-      font-size: 14px;
-    }
-    .qty-input::placeholder {
-      color: #58596b;
-    }
-    .qty-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: #c4c5d2;
-    }
-    .qty-max {
-      font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid #3f8cff;
-      color: #3f8cff;
-    }
-    .available-row {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #797a88;
-    }
-    .available-row .value {
-      color: #ffffff;
-      margin-left: 4px;
-    }
-    .info-card {
-      margin-top: 14px;
-      border-radius: 12px;
-      background: #0b0c13;
-      border: 1px solid #161724;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: #c4c5d2;
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 0;
-    }
-    .withdraw-btn {
-      margin-top: 16px;
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(90deg, #3f8cff, #6a5bff);
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 600;
-    }
-    .reminder-title {
-      margin-top: 18px;
-      font-size: 13px;
-      color: #c4c5d2;
-      font-weight: 500;
-    }
-    .reminder-list {
-      margin-top: 8px;
-      padding-left: 18px;
-      font-size: 11px;
-      color: #9a9baa;
-    }
-    .reminder-em {
-      color: #ffd262;
-    }
-
-    /* Modal styles */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -298,6 +84,20 @@
       background: #3f8cff;
       color: #ffffff;
     }
+    .address-row.has-value .select-placeholder {
+      color: #ffffff;
+    }
+    .address-text {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .header-icon-img {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -316,17 +116,19 @@
       <div class="section-label">Withdrawal Currency</div>
       <div class="select-box">
         <span class="select-value">USDT</span>
+        <!-- تم حذف السهم الصغير للعملة -->
       </div>
 
       <div class="section-label">Withdrawal Network</div>
       <div class="network-row">
-        <button type="button" class="network-pill active">TRC20</button>
+        <button type="button" class="network-pill">TRC20</button>
       </div>
 
       <div class="section-label">Withdrawal Address</div>
       <div class="select-box address-row" id="addressRow">
         <span class="select-placeholder address-text" id="addressText">Please select an address</span>
         <div class="address-icon">👤</div>
+        <span class="chevron">▾</span>
       </div>
 
       <button type="button" class="add-address-btn" id="addAddressBtn">Add address</button>
@@ -336,27 +138,27 @@
         <input class="qty-input" id="qtyInput" type="number" min="0" step="0.01"
                placeholder="Enter Withdrawal Quantity" />
         <div class="qty-right">
-          <span class="qty-unit" id="qtyUnit">USDT</span>
+          <span class="qty-unit">USDT</span>
           <span class="qty-max" id="maxLink">MAX</span>
         </div>
       </div>
 
       <div class="available-row">
-        Available <span class="value" id="availableVal">0.00 USDT</span>
+        Available <span class="value" id="availableVal">3.06 USDT</span>
       </div>
 
       <div class="info-card">
         <div class="info-row">
           <span>Minimum Withdrawal Quantity</span>
-          <span><span id="minQty">20</span> <span id="minQtySymbol">USDT</span></span>
+          <span><span id="minQty">20</span> USDT</span>
         </div>
         <div class="info-row">
           <span>Withdrawal Fee</span>
-          <span><span id="feeVal">0</span> <span id="feeSymbol">USDT</span></span>
+          <span><span id="feeVal">0</span> USDT</span>
         </div>
         <div class="info-row">
           <span>Received Quantity</span>
-          <span><span id="recvVal">0</span> <span id="recvSymbol">USDT</span></span>
+          <span><span id="recvVal">0</span> USDT</span>
         </div>
       </div>
 
@@ -369,12 +171,12 @@
         <li>Withdrawals will arrive within 2–120 hours.</li>
         <li>After completing <span class="reminder-em">6</span> AI computing power tasks, you can apply for withdrawal.</li>
         <li>Make sure your computer and browser are secure to prevent information from being tampered with or leaked.</li>
-        <li>Before withdrawing coins, please confirm whether the withdrawal address is safe and corresponds to the current currency. Once the address of a non-TRC20 network is used, the platform cannot help to retrieve it. Please check carefully before withdrawing coins.</li>
+        <li>Before withdrawing coins, please confirm whether the withdrawal address is safe and corresponds to the current currency. Once the address of a non‑TRC20 network is used, the platform cannot help to retrieve it. Please check carefully before withdrawing coins.</li>
       </ol>
     </main>
   </div>
 
-  <!-- Address modal -->
+  <!-- Popup: Add address -->
   <div class="modal-backdrop" id="addressModal">
     <div class="modal">
       <div class="modal-title">Add withdrawal address</div>
@@ -398,19 +200,20 @@
       var feeVal = document.getElementById('feeVal');
       var recvVal = document.getElementById('recvVal');
       var minQty = 20;
-      var minQtySymbol = document.getElementById('minQtySymbol');
-      var feeSymbol = document.getElementById('feeSymbol');
-      var recvSymbol = document.getElementById('recvSymbol');
       var maxAvailable = 0;
       var maxLink = document.getElementById('maxLink');
       var withdrawBtn = document.getElementById('withdrawBtn');
       var availableVal = document.getElementById('availableVal');
-      var qtyUnit = document.getElementById('qtyUnit');
 
+      var currentUser = null;
+      var balance = 0;
+
+      // عناصر العنوان
       var addressRow = document.getElementById('addressRow');
       var addressText = document.getElementById('addressText');
       var addAddressBtn = document.getElementById('addAddressBtn');
 
+      // Popup elements
       var addressModal = document.getElementById('addressModal');
       var modalCancel = document.getElementById('modalCancel');
       var modalConfirm = document.getElementById('modalConfirm');
@@ -418,14 +221,11 @@
       var walletInternal = document.getElementById('walletInternal');
       var walletExternal = document.getElementById('walletExternal');
 
-      var billsIcon = document.getElementById('billsIcon');
-
-      var currentUser = null;
-      var balances = { USDT: 0 };
-      var balance = 0;
       var selectedWalletType = null;
       var selectedAddress = null;
 
+      // Bills icon
+      var billsIcon = document.getElementById('billsIcon');
       if (billsIcon) {
         billsIcon.addEventListener('click', function() {
           window.location.href = 'Bills.html';
@@ -433,23 +233,15 @@
       }
 
       if (window.ExaAuth) {
-        currentUser = ExaAuth.getCurrentUser && ExaAuth.getCurrentUser();
+        currentUser = ExaAuth.getCurrentUser();
         if (currentUser && typeof currentUser.usdtBalance === 'number') {
-          balances.USDT = currentUser.usdtBalance;
+          balance = currentUser.usdtBalance;
         }
       }
 
-      function refreshBalance() {
-        balance = balances.USDT || 0;
-        maxAvailable = balance;
-        if (availableVal) {
-          availableVal.textContent = balance.toFixed(2) + ' USDT';
-        }
-        if (qtyUnit) qtyUnit.textContent = 'USDT';
-        if (minQtySymbol) minQtySymbol.textContent = 'USDT';
-        if (feeSymbol) feeSymbol.textContent = 'USDT';
-        if (recvSymbol) recvSymbol.textContent = 'USDT';
-        updateValues();
+      maxAvailable = balance;
+      if (availableVal) {
+        availableVal.textContent = balance.toFixed(2) + ' USDT';
       }
 
       function updateValues() {
@@ -476,34 +268,25 @@
         });
       }
 
+      // TRC20 address validation
+      function isValidTRC20Address(addr) {
+        var re = /^T[1-9A-HJ-NP-Za-km-z]{25,33}$/;
+        return re.test(addr);
+      }
+
+      // Open / close modal
       function openAddressModal() {
         if (!addressModal) return;
         addressModal.style.display = 'flex';
         selectedWalletType = null;
         addressInput.value = '';
-        walletInternal.classList.remove('active');
-        walletExternal.classList.remove('active');
+        if (walletInternal) walletInternal.classList.remove('active');
+        if (walletExternal) walletExternal.classList.remove('active');
       }
 
       function closeAddressModal() {
         if (!addressModal) return;
         addressModal.style.display = 'none';
-      }
-
-      if (walletInternal) {
-        walletInternal.addEventListener('click', function() {
-          selectedWalletType = this.getAttribute('data-type');
-          walletInternal.classList.add('active');
-          walletExternal.classList.remove('active');
-        });
-      }
-
-      if (walletExternal) {
-        walletExternal.addEventListener('click', function() {
-          selectedWalletType = this.getAttribute('data-type');
-          walletExternal.classList.add('active');
-          walletInternal.classList.remove('active');
-        });
       }
 
       if (addAddressBtn) {
@@ -513,15 +296,25 @@
         addressRow.addEventListener('click', openAddressModal);
       }
 
+      if (walletInternal) {
+        walletInternal.addEventListener('click', function() {
+          selectedWalletType = this.getAttribute('data-type');
+          walletInternal.classList.add('active');
+          walletExternal.classList.remove('active');
+        });
+      }
+      if (walletExternal) {
+        walletExternal.addEventListener('click', function() {
+          selectedWalletType = this.getAttribute('data-type');
+          walletExternal.classList.add('active');
+          walletInternal.classList.remove('active');
+        });
+      }
+
       if (modalCancel) {
         modalCancel.addEventListener('click', function() {
           closeAddressModal();
         });
-      }
-
-      function isValidTRC20Address(addr) {
-        var re = /^T[1-9A-HJ-NP-Za-km-z]{25,33}$/;
-        return re.test(addr);
       }
 
       if (modalConfirm) {
@@ -539,6 +332,7 @@
             alert('Invalid TRC20 address. It should start with T and be 26-34 characters long.');
             return;
           }
+
           selectedAddress = {
             type: selectedWalletType,
             address: addr
@@ -592,7 +386,6 @@
           var tx = {
             id: 'wd_' + Date.now(),
             type: 'withdraw',
-            currency: 'USDT',
             amount: v,
             fee: fee,
             net: received,
@@ -607,28 +400,31 @@
             ExaAuth.addTransaction(currentUser.uid, tx);
           }
 
-          balances.USDT = (balances.USDT || 0) - v;
-          if (balances.USDT < 0) balances.USDT = 0;
-          currentUser.usdtBalance = parseFloat(balances.USDT.toFixed(2));
-
           var frozen = typeof currentUser.frozenBalance === 'number' ? currentUser.frozenBalance : 0;
+          balance = balance - v;
+          if (balance < 0) balance = 0;
+          currentUser.usdtBalance = parseFloat(balance.toFixed(2));
           currentUser.frozenBalance = parseFloat((frozen + v).toFixed(2));
 
           if (typeof ExaAuth.updateUser === 'function') {
             ExaAuth.updateUser(currentUser);
-          } else if (typeof ExaAuth.setCurrentUser === 'function') {
+          } else {
             ExaAuth.setCurrentUser(currentUser);
           }
 
-          qtyInput.value = '';
+          maxAvailable = balance;
+          if (availableVal) {
+            availableVal.textContent = balance.toFixed(2) + ' USDT';
+          }
+
+          if (qtyInput) {
+            qtyInput.value = '';
+          }
           updateValues();
-          refreshBalance();
 
           alert('Withdrawal request submitted and is pending review.');
         });
       }
-
-      refreshBalance();
     })();
   </script>
 
