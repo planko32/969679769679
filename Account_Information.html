@@ -275,7 +275,7 @@
           <div class="row">
             <div class="label">Phone</div>
             <div class="value">
-              <span class="value-link">70758137</span>
+              <span class="value-link account-phone-value">70758137</span>
             </div>
           </div>
         </section>
@@ -285,13 +285,13 @@
           <div class="row">
             <div class="label">Email</div>
             <div class="value">
-              <span class="value-link">ieudhehehe@mozej.com</span>
+              <span class="value-link account-email-value">ieudhehehe@mozej.com</span>
             </div>
           </div>
           <div class="row">
             <div class="label">Registration Time</div>
             <div class="value">
-              <span>2025-11-29 16:44:43</span>
+              <span class="account-regtime-value">2025-11-29 16:44:43</span>
             </div>
           </div>
         </section>
@@ -301,7 +301,7 @@
           <div class="row">
             <div class="label">Registration Method</div>
             <div class="value">
-              <span>Phone</span>
+              <span class="account-regmethod-value">Phone</span>
             </div>
           </div>
         </section>
@@ -312,6 +312,47 @@
   <div id="toast" class="toast-message"></div>
 
   <script>
+    // Load dynamic account data from localStorage (if available)
+    (function () {
+      function safeText(value, fallback) {
+        if (typeof value === "string" && value.trim() !== "") return value;
+        return fallback;
+      }
+
+      try {
+        var storedProfile = null;
+        var rawProfile = localStorage.getItem("userProfile");
+        if (rawProfile) {
+          try {
+            storedProfile = JSON.parse(rawProfile);
+          } catch (e) {
+            storedProfile = null;
+          }
+        }
+
+        var id = safeText(localStorage.getItem("accountId") || (storedProfile && storedProfile.id), document.getElementById("user-id").textContent);
+        var phone = safeText(localStorage.getItem("accountPhone") || (storedProfile && storedProfile.phone), document.querySelector(".account-phone-value").textContent);
+        var email = safeText(localStorage.getItem("accountEmail") || (storedProfile && storedProfile.email), document.querySelector(".account-email-value").textContent);
+        var regTime = safeText(localStorage.getItem("accountRegTime") || (storedProfile && storedProfile.regTime), document.querySelector(".account-regtime-value").textContent);
+        var regMethod = safeText(localStorage.getItem("accountRegMethod") || (storedProfile && storedProfile.regMethod), document.querySelector(".account-regmethod-value").textContent);
+
+        var idEl = document.getElementById("user-id");
+        var phoneEls = document.querySelectorAll(".account-phone-value");
+        var emailEls = document.querySelectorAll(".account-email-value");
+        var regTimeEls = document.querySelectorAll(".account-regtime-value");
+        var regMethodEls = document.querySelectorAll(".account-regmethod-value");
+
+        if (idEl) idEl.textContent = id;
+        phoneEls.forEach(function (el) { el.textContent = phone; });
+        emailEls.forEach(function (el) { el.textContent = email; });
+        regTimeEls.forEach(function (el) { el.textContent = regTime; });
+        regMethodEls.forEach(function (el) { el.textContent = regMethod; });
+      } catch (err) {
+        // fail silently, show default placeholders
+      }
+    })();
+
+    // Copy ID with toast
     (function () {
       var copyBtn = document.getElementById('copy-id');
       var idSpan = document.getElementById('user-id');
