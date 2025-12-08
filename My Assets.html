@@ -733,6 +733,18 @@
       });
 
       // Bottom navigation bar
+      var bottomTools = document.querySelector('.bottom-nav .bottom-item.tools');
+      if (bottomTools) {
+        bottomTools.addEventListener('click', function () {
+          window.location.href = 'AI_Tools.html';
+        });
+      }
+      var bottomChat = document.querySelector('.bottom-nav .bottom-item.chat');
+      if (bottomChat) {
+        bottomChat.addEventListener('click', function () {
+          window.location.href = 'ai-chat.html';
+        });
+      }
       var bottomPower = document.querySelector('.bottom-nav .bottom-item.power');
       if (bottomPower) {
         bottomPower.addEventListener('click', function () {
